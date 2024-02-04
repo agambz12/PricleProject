@@ -7,6 +7,7 @@ import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class DataBaseManager {
 
@@ -30,6 +31,14 @@ public class DataBaseManager {
                 .collection(RECYCLE_BINS)
                 .document(recycleBin.getId())
                 .set(recycleBin)
+                .addOnCompleteListener(listener);
+    }
+
+    public static void getRecycleBins(OnCompleteListener<QuerySnapshot> listener) {
+        FirebaseFirestore
+                .getInstance()
+                .collection(RECYCLE_BINS)
+                .get()
                 .addOnCompleteListener(listener);
     }
 }

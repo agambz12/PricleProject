@@ -135,7 +135,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         if (view == IMpaper) {
             createPaperDialog();
         } else if (view == IMcontinuePaper) {
-            Intent intent = new Intent(HomeScreenActivity.this, MapActivity.class);
+            Intent intent = new Intent(HomeScreenActivity.this, RecyclerBinListActivity.class);
             startActivity(intent);
         } else if (view == IMclosePaper) {
             paperDialog.dismiss();
