@@ -12,6 +12,7 @@ public class AlertDialogUtils {
                 .setTitle(title)
                 .setMessage(message)
                 .show();
+
     }
 
     public static void showOptionsAlertDialog(Context context, String title,
