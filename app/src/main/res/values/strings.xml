@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="todo">todo</string>
+    <string name="enter_email">Enter email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="error">Error</string>
+    <string name="sign_out">Sign out</string>
+    <string name="alarm">Alarm!</string>
+    <string name="are_you_sure_sign_out">Are you sure you want to sign out?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="name">Name</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="create">Create</string>
+    <string name="please_enter_your_name">Please Enter your name</string>
+    <string name="please_enter_your_last_name">Please Enter your last name</string>
+    <string name="please_enter_your_phone">Please Enter your phone number</string>
+    <string name="create_successfully">Create successfully</string>
+    <string name="save">Save</string>
+    <string name="address">Address</string>
+    <string name="create_reyclerbin">Create Recyclebin</string>
+    <string name="no_location">Location is a mandatory field!</string>
+    <string name="select_recycle_type">Please select recycle bin type</string>
+</resources>

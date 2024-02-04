@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "789091830266",
+    "project_id": "pricycle-app",
+    "storage_bucket": "pricycle-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789091830266:android:418a500c9625e82245bc43",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASwp6F7xJIcY5-QvPVK0vE0XAcKpwGlvA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

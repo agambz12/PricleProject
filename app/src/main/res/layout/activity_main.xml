@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/mainpic"
+    android:gravity="center_horizontal"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PRICLE"
+        android:fontFamily="serif"
+        android:textSize="100dp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:textColor="@color/cardview_shadow_start_color"/>
+
+    <ImageView
+        android:layout_width="230dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="-110dp"
+        android:layout_marginLeft="110dp"
+        android:layout_gravity="center"
+        android:src="@drawable/logo" />
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:paddingHorizontal="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="@string/enter_email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:paddingHorizontal="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_password">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:fontFamily="serif"
+        android:text="REGISTER"
+        android:textSize="20dp"
+        android:backgroundTint="@color/cardview_shadow_start_color"
+        android:id="@+id/register"
+        android:textColor="@color/white"/>
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="LOG IN"
+        android:fontFamily="serif"
+        android:textSize="20dp"
+        android:backgroundTint="@color/cardview_shadow_start_color"
+        android:id="@+id/login"
+        android:textColor="@color/white"/>
+
+    <Button
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:text="Log In as a guest"
+        android:fontFamily="serif"
+        android:textSize="20dp"
+        android:backgroundTint="@color/cardview_shadow_start_color"
+        android:id="@+id/logonGuest"
+        android:textColor="@color/white"/>
+
+
+
+</LinearLayout>
