@@ -6,8 +6,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import com.example.myapplication.adapters.RecycleBinsAdapter;
@@ -21,26 +26,42 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Consumer;
 
 public class RecyclerBinListActivity extends AppCompatActivity {
 
+    public static final String TYPE = "TYPE";
     private RecycleBinType type = RecycleBinType.GLASS;
     private FusedLocationProviderClient fusedLocationClient;
     private Location myLocation;
     private RecycleBinsAdapter adapter;
+    private LocationManager locationManager;
+    int LOCATION_REFRESH_TIME = 15000; // 15 seconds to update
+    int LOCATION_REFRESH_DISTANCE = 500; // 500 meters to update
+    private final LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+            myLocation = location;
+            fetchRecycleBins();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_bin_list);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        type = (RecycleBinType) getIntent().getSerializableExtra(TYPE);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
         RecyclerView recyclerView = findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecycleBinsAdapter();
+        adapter = new RecycleBinsAdapter(this);
         recyclerView.setAdapter(adapter);
         findMyLocationIfHasAccess();
 
@@ -74,7 +95,7 @@ public class RecyclerBinListActivity extends AppCompatActivity {
     }
 
     private float getDistance(RecycleBin recycleBin) {
-        float distance = -1;
+        float distance = 0;
 
         Location recycleBinLocation = new Location("location");
         recycleBinLocation.setLatitude(recycleBin.getLocation().latitude);
@@ -98,17 +119,8 @@ public class RecyclerBinListActivity extends AppCompatActivity {
 
     private void findMyLocation() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient.getLastLocation()
-                    .addOnCompleteListener(new OnCompleteListener<Location>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Location> task) {
-                            if (task.isSuccessful()) {
-                                RecyclerBinListActivity.this.myLocation = task.getResult();
-                            }
-                            fetchRecycleBins();
-                        }
-
-                    });
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+                    LOCATION_REFRESH_DISTANCE, mLocationListener);
         }
     }
 

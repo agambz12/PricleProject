@@ -1,15 +1,20 @@
 package com.example.myapplication.adapters;
 
+import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.CreatePickupRequestDialog;
 import com.example.myapplication.R;
 import com.example.myapplication.models.RecycleBin;
 import com.example.myapplication.models.RecycleBinData;
@@ -20,9 +25,14 @@ import java.util.List;
 public class RecycleBinsAdapter extends RecyclerView.Adapter<RecycleBinsAdapter.RecycleBinViewHolder> {
 
     private List<RecycleBinData> items = new ArrayList<>();
-
+    private AppCompatActivity activity;
     public void setItems(List<RecycleBinData> items) {
         this.items = items;
+    }
+
+
+    public RecycleBinsAdapter(AppCompatActivity activity) {
+        this.activity = activity;
     }
 
     @NonNull
@@ -41,7 +51,14 @@ public class RecycleBinsAdapter extends RecyclerView.Adapter<RecycleBinsAdapter.
 
         holder.type.setText(recycleBin.getType().name());
         holder.location.setText(recycleBin.getLocation().getAddress());
-        holder.distance.setText(String.valueOf(items.get(position).getDistance()));
+        holder.distance.setText(holder.itemView.getContext().getString(R.string.distance_is, items.get(position).getDistance()));
+        holder.requestBT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CreatePickupRequestDialog dialog = new CreatePickupRequestDialog();
+                dialog.show(activity.getSupportFragmentManager(),"");
+            }
+        });
     }
 
     @Override
@@ -54,6 +71,7 @@ public class RecycleBinsAdapter extends RecyclerView.Adapter<RecycleBinsAdapter.
 
         ImageView image;
         TextView location, type, distance;
+        Button requestBT;
 
         public RecycleBinViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -61,6 +79,7 @@ public class RecycleBinsAdapter extends RecyclerView.Adapter<RecycleBinsAdapter.
             location = itemView.findViewById(R.id.location);
             type = itemView.findViewById(R.id.type);
             distance = itemView.findViewById(R.id.distance);
+            requestBT = itemView.findViewById(R.id.request);
         }
     }
 }

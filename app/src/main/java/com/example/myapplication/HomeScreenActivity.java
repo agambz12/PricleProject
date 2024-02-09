@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
 
+import com.example.myapplication.models.RecycleBinType;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Locale;
@@ -136,21 +137,23 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
             createPaperDialog();
         } else if (view == IMcontinuePaper) {
             Intent intent = new Intent(HomeScreenActivity.this, RecyclerBinListActivity.class);
+            intent.putExtra(RecyclerBinListActivity.TYPE, RecycleBinType.PAPER);
             startActivity(intent);
         } else if (view == IMclosePaper) {
             paperDialog.dismiss();
         } else if (view == IMglass) {
             createGlassDialog();
         } else if (view == IMcontinueGlass) {
-            Intent intent= new Intent(HomeScreenActivity.this, MapActivity.class);
+            Intent intent = new Intent(HomeScreenActivity.this, RecyclerBinListActivity.class);
+            intent.putExtra(RecyclerBinListActivity.TYPE, RecycleBinType.GLASS);
             startActivity(intent);
         } else if (view == IMcloseGlass) {
             glassDialog.dismiss();
         } else if (view == IMpackaging) {
             createPackagingDialog();
         } else if (view == IMcontinuePackaging) {
-            Intent intent=new Intent(HomeScreenActivity.this, MapActivity.class);
-            startActivity(intent);
+            Intent intent = new Intent(HomeScreenActivity.this, RecyclerBinListActivity.class);
+            intent.putExtra(RecyclerBinListActivity.TYPE, RecycleBinType.PACKAGING);
         } else if (view == IMclosePackaging) {
             packagingDialog.dismiss();
         } else if (view == BTNpickup) {
