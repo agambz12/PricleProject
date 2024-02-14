@@ -1,5 +1,7 @@
 package com.example.myapplication.models;
 
+import java.util.ArrayList;
+
 public class RecycleBinData {
     private RecycleBin recycleBin;
     private float distance;

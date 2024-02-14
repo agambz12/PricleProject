@@ -2,10 +2,12 @@ package com.example.myapplication;
 
 import androidx.annotation.NonNull;
 
+import com.example.myapplication.models.PickUpRequest;
 import com.example.myapplication.models.RecycleBin;
 import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -39,6 +41,25 @@ public class DataBaseManager {
                 .getInstance()
                 .collection(RECYCLE_BINS)
                 .get()
+                .addOnCompleteListener(listener);
+    }
+
+    public static void getSessionUser(String uid,  OnCompleteListener<DocumentSnapshot> listener) {
+        FirebaseFirestore
+                .getInstance()
+                .collection(USERS)
+                .document(uid)
+                .get()
+                .addOnCompleteListener(listener);
+    }
+
+    public static void createPickUpRequest(PickUpRequest pickUpRequest, RecycleBin recycleBin, OnCompleteListener<Void> listener) {
+        recycleBin.getPickUpRequests().add(pickUpRequest);
+        FirebaseFirestore
+                .getInstance()
+                .collection(RECYCLE_BINS)
+                .document(recycleBin.getId())
+                .set(recycleBin)
                 .addOnCompleteListener(listener);
     }
 }

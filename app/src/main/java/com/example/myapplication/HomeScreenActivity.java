@@ -59,7 +59,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         BTNpickup = (Button) findViewById(R.id.btpickup);
         BTNpickup.setOnClickListener(this);
 
-        timeButton=findViewById(R.id.timeButton);
+        //timeButton=findViewById(R.id.timeButton);
         createRecycleBinBT = findViewById(R.id.create_recycle_bin);
         createRecycleBinBT.setOnClickListener(new View.OnClickListener() {
             @Override

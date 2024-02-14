@@ -1,10 +1,14 @@
 package com.example.myapplication.models;
 
-public class RecycleBin {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class RecycleBin implements Serializable {
 
     private String imageUrl;
     private Location location;
     private RecycleBinType type;
+    private ArrayList<PickUpRequest> pickUpRequests = new ArrayList<>();
     private String id;
 
     public RecycleBinType getType() {
@@ -32,6 +36,9 @@ public class RecycleBin {
         this.type = type;
     }
 
+    public ArrayList<PickUpRequest> getPickUpRequests() {
+        return pickUpRequests;
+    }
 
     public String getImageUrl() {
         return imageUrl;

@@ -42,6 +42,7 @@
             android:focusable="false"
             android:layout_marginTop="16dp"
             android:layout_gravity="center"
+            android:enabled="false"
             android:hint="@string/full_name">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -73,6 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="false"
+            android:enabled="false"
             android:layout_marginTop="16dp"
             android:layout_gravity="center"
             android:hint="@string/contact_phone">
@@ -85,21 +87,21 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:layout_width="160dp"
-            android:layout_height="50dp"
-            android:id="@+id/timeButton"
-            android:onClick="PopTimePicker"
-            android:textSize="17sp"
-            android:padding="5dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:backgroundTint="@color/cardview_shadow_start_color"
-            android:textColorHint="@color/black"
-            android:hint="Select Hour"
-            android:drawableRight="@drawable/clock"
-            />
+            android:hint="@string/choode_pick_up_time">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/timeET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <Button
@@ -108,7 +110,7 @@
             android:id="@+id/send_pickup"
             android:layout_marginTop="16dp"
             android:layout_gravity="center_horizontal"
-            android:text="@string/send"/>
+            android:text="@string/save"/>
     </LinearLayout>
 
     

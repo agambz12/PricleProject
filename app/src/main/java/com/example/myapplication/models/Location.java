@@ -12,7 +12,6 @@ public class Location implements Serializable {
     }
 
     public Location() {
-
     }
 
     public double latitude;

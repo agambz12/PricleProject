@@ -26,4 +26,8 @@
     <string name="full_name">Full name</string>
     <string name="contact_phone">Contact Phone</string>
     <string name="send">Send</string>
+    <string name="choode_pick_up_time">Choose pick up time</string>
+    <string name="please_enter_full_name">Please enter your full name</string>
+    <string name="please_enter_your_address">Please enter your address</string>
+    <string name="please_enter_your_pick_up_time">Please enter ypur pick up time</string>
 </resources>

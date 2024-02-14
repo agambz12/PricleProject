@@ -55,7 +55,7 @@ public class RecycleBinsAdapter extends RecyclerView.Adapter<RecycleBinsAdapter.
         holder.requestBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreatePickupRequestDialog dialog = new CreatePickupRequestDialog();
+                CreatePickupRequestDialog dialog = new CreatePickupRequestDialog(recycleBin);
                 dialog.show(activity.getSupportFragmentManager(),"");
             }
         });

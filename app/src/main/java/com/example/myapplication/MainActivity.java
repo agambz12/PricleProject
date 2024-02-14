@@ -3,18 +3,22 @@ package com.example.myapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     TextInputEditText passwordET, emailET;
+    ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +48,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToHomeScreen() {
-        Intent intent = new Intent(MainActivity.this, HomeScreenActivity.class);
-        startActivity(intent);
-        finish();
+        DataBaseManager.getSessionUser(auth.getCurrentUser().getUid(), new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    Session.currentUser = task.getResult().toObject(User.class);
+                    Intent intent = new Intent(MainActivity.this, HomeScreenActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    AlertDialogUtils.showAlertDialog(MainActivity.this, getString(R.string.error), task.getException().getMessage());
+                }
+            }
+        });
+
     }
 
     private void onLoginButtonClicked() {
