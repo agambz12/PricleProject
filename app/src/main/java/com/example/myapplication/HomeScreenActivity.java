@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
 import com.example.myapplication.models.RecycleBinType;
@@ -56,8 +57,6 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         IMpackaging.setOnClickListener(this);
         IMglass = (ImageButton) findViewById(R.id.btglass);
         IMglass.setOnClickListener(this);
-        BTNpickup = (Button) findViewById(R.id.btpickup);
-        BTNpickup.setOnClickListener(this);
 
         //timeButton=findViewById(R.id.timeButton);
         createRecycleBinBT = findViewById(R.id.create_recycle_bin);
@@ -107,6 +106,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         IMcontinueGlass.setOnClickListener(this);
         IMcloseGlass = (ImageButton) glassDialog.findViewById(R.id.btbackglass);
         IMcloseGlass.setOnClickListener(this);
+        glassDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         glassDialog.show();
     }
 
@@ -115,6 +115,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         packagingDialog = new Dialog(this);
         packagingDialog.setContentView(R.layout.packaging_dialog);
         packagingDialog.setCancelable(true);
+        packagingDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);;
         IMcontinuePackaging = (ImageButton) packagingDialog.findViewById(R.id.btGoPackaging);
         IMcontinuePackaging.setOnClickListener(this);
         IMclosePackaging = (ImageButton) packagingDialog.findViewById(R.id.btbackpackaging);
@@ -126,6 +127,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         pickupDialog = new Dialog(this);
         pickupDialog.setContentView(R.layout.pickup_dialog);
         pickupDialog.setCancelable(true);
+        pickupDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);;
         IMclosepickup = (ImageButton) pickupDialog.findViewById(R.id.btbackpickup);
         IMclosepickup.setOnClickListener(this);
         pickupDialog.show();
@@ -175,6 +177,10 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
             return true;
         } else if (item.getItemId() == R.id.sign_out) {
             onSignOutClicked();
+        } else if (item.getItemId() == R.id.profile) {
+            Intent intent = new Intent(this, CreateOrUpdateProfileActivity.class);
+            startActivity(intent);
+           return true;
         }
         return super.onOptionsItemSelected(item);
     }

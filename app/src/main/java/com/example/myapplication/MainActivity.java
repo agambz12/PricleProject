@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToHomeScreen() {
-        DataBaseManager.getSessionUser(auth.getCurrentUser().getUid(), new OnCompleteListener<DocumentSnapshot>() {
+        DataBaseManager.getUser(auth.getCurrentUser().getUid(), new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -85,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Intent intent = new Intent(MainActivity.this, CreateProfileActivity.class);
-                    intent.putExtra(CreateProfileActivity.CREATE_PROFILE, true);
+                    Intent intent = new Intent(MainActivity.this, CreateOrUpdateProfileActivity.class);
+                    intent.putExtra(CreateOrUpdateProfileActivity.CREATE_PROFILE, true);
                     startActivity(intent);
                 } else {
                     AlertDialogUtils.showAlertDialog(MainActivity.this, getString(R.string.error), task.getException().getMessage());

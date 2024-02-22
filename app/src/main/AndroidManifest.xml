@@ -23,7 +23,7 @@
             android:name=".CreateRecycleBinActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateProfileActivity"
+            android:name=".CreateOrUpdateProfileActivity"
             android:exported="false" />
         <activity
             android:name=".MapActivity"

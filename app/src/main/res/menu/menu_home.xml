@@ -6,8 +6,8 @@
     android:title="Exit App"/>
 
     <item
-        android:id="@+id/share_home"
-        android:title="Share"/>
+        android:id="@+id/profile"
+        android:title="@string/my_profile"/>
 
     <item
         android:id="@+id/sign_out"

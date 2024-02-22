@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TimePicker;
 
 import androidx.activity.result.ActivityResult;
@@ -30,11 +31,11 @@ import java.util.UUID;
 
 public class CreatePickupRequestDialog extends DialogFragment {
 
-    private TextInputEditText addressET, phoneET, fullNameET, timeET;
+    private TextInputEditText addressET, phoneET, fullNameET;
+    private Button timeBT;
     private Address address;
     int pickUpHour, pickUpMin;
-    private Button saveBT;
-    private RecycleBin recycleBin;
+    private final RecycleBin recycleBin;
 
 
     ActivityResultLauncher<Intent> mapLauncher =
@@ -65,14 +66,16 @@ public class CreatePickupRequestDialog extends DialogFragment {
         addressET = view.findViewById(R.id.address);
         phoneET = view.findViewById(R.id.phone);
         fullNameET = view.findViewById(R.id.full_name);
+
         fullNameET.setText(Session.currentUser.getFirstName() + " " + Session.currentUser.getLastName());
         phoneET.setText(Session.currentUser.getPhone());
-        saveBT = view.findViewById(R.id.send_pickup);
-        timeET = view.findViewById(R.id.timeET);
-
+        Button saveBT = view.findViewById(R.id.send_pickup);
+        timeBT = view.findViewById(R.id.timeButton);
+        ImageButton backBT = view.findViewById(R.id.btbackpickup);
         addressET.setOnClickListener(v -> openMapScreen());
-        timeET.setOnClickListener(v -> openTimePicker());
+        timeBT.setOnClickListener(v -> openTimePicker());
         saveBT.setOnClickListener(v -> savePickUpRequest());
+        backBT.setOnClickListener(v -> dismiss());
         return view;
     }
 
@@ -82,10 +85,10 @@ public class CreatePickupRequestDialog extends DialogFragment {
             addressET.setError(getString(R.string.please_enter_your_address));
             isValidInput= false;
         }
-        if (timeET.getText().equals("")) {
-            addressET.setError(getString(R.string.please_enter_your_pick_up_time));
-            isValidInput= false;
-        }
+//        if (timeET.getText().equals("")) {
+//            addressET.setError(getString(R.string.please_enter_your_pick_up_time));
+//            isValidInput= false;
+//        }
         
         if (isValidInput) {
             createRequest();
@@ -117,7 +120,7 @@ public class CreatePickupRequestDialog extends DialogFragment {
                                           int minute) {
                         pickUpHour = hourOfDay;
                         pickUpMin = minute;
-                        timeET.setText(hourOfDay + ":" + minute);
+                        //timeET.setText(hourOfDay + ":" + minute);
                     }
                 }, pickUpHour, pickUpMin, true);
         timePickerDialog.show();

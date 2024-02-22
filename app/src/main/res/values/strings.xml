@@ -30,4 +30,10 @@
     <string name="please_enter_full_name">Please enter your full name</string>
     <string name="please_enter_your_address">Please enter your address</string>
     <string name="please_enter_your_pick_up_time">Please enter ypur pick up time</string>
+    <string name="show_pickups_requests">Show Pickups Requests</string>
+    <string name="request_pickup">Request Pick Up</string>
+    <string name="requets">Requests</string>
+    <string name="approve">Approve</string>
+    <string name="my_profile">My Profile</string>
+    <string name="update_your_account_details">Update Your Account Details</string>
 </resources>

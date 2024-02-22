@@ -15,8 +15,10 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,7 +29,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 
-public class CreateProfileActivity extends AppCompatActivity {
+public class CreateOrUpdateProfileActivity extends AppCompatActivity {
     
     public static final String CREATE_PROFILE = "CREATE_PROFILE";
     private Bitmap imageBitmap;
@@ -42,6 +44,7 @@ public class CreateProfileActivity extends AppCompatActivity {
     private StorageReference storageRef;
     private FirebaseAuth auth;
     private String imageDownloadUrl;
+    private TextView title;
 
 
     private ActivityResultLauncher<Intent> cameraActivityResultLauncher = registerForActivityResult(
@@ -74,8 +77,6 @@ public class CreateProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        boolean isCreateMode = getIntent().getBooleanExtra(CREATE_PROFILE, false);
-
         auth = FirebaseAuth.getInstance();
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -88,6 +89,7 @@ public class CreateProfileActivity extends AppCompatActivity {
         ETname=findViewById(R.id.name);
         ETlastName=findViewById(R.id.last_name);
         ETphoneNumber=findViewById(R.id.pNumber);
+        title = findViewById(R.id.title);
 
         cameraBT.setOnClickListener(v-> {
             openCamera();
@@ -99,8 +101,23 @@ public class CreateProfileActivity extends AppCompatActivity {
 
         createBT = findViewById(R.id.create);
         createBT.setOnClickListener(v-> createProfile());
+        if (Session.currentUser != null) {
+            updateUserFields();
+        }
 
 
+    }
+
+    private void updateUserFields() {
+        ETemail.setText(Session.currentUser.getEmail());
+        ETname.setText(Session.currentUser.getFirstName());
+        ETlastName.setText(Session.currentUser.getLastName());
+        ETphoneNumber.setText(Session.currentUser.getPhone());
+        createBT.setText(getString(R.string.save));
+        Glide.with(this).load(Session.currentUser.getImage()).centerCrop()
+                //.placeholder(R.drawable.loading_spinner)
+                .into(profileImg);
+        title.setText(getString(R.string.update_your_account_details));
     }
 
     private void createProfile() {
@@ -129,17 +146,20 @@ public class CreateProfileActivity extends AppCompatActivity {
             public void run() {
                 User user = new User(ETname.getText().toString(), ETlastName.getText().toString(),
                         ETphoneNumber.getText().toString(), imageDownloadUrl, auth.getCurrentUser().getEmail(), auth.getCurrentUser().getUid());
+                if (Session.currentUser != null) {
+                    user.setPickUpRequests(Session.currentUser.getPickUpRequests());
+                }
                 DataBaseManager.createUser(user, new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
                             Session.currentUser = user;
-                            Toast.makeText(CreateProfileActivity.this, R.string.create_successfully, Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(CreateProfileActivity.this, HomeScreenActivity.class);
+                            Toast.makeText(CreateOrUpdateProfileActivity.this, R.string.create_successfully, Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(CreateOrUpdateProfileActivity.this, HomeScreenActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
-                            AlertDialogUtils.showAlertDialog(CreateProfileActivity.this, getString(R.string.error), task.getException().getMessage());
+                            AlertDialogUtils.showAlertDialog(CreateOrUpdateProfileActivity.this, getString(R.string.error), task.getException().getMessage());
                         }
                     }
                 });
@@ -149,22 +169,27 @@ public class CreateProfileActivity extends AppCompatActivity {
     }
 
     private void uploadImageToStorage(Runnable onDone) {
-        // the image name should be the user uuid - uniqe
-        StorageReference imageRef = storageRef.child("images/" + auth.getCurrentUser().getUid() + ".jpg");
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageData = baos.toByteArray();
-        // Upload file to Firebase Storage
-        UploadTask uploadTask = imageRef.putBytes(imageData);
-        uploadTask.addOnSuccessListener(taskSnapshot -> {
-            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                imageDownloadUrl = uri.toString();
-                onDone.run();
+        if (imageBitmap == null) {// this is update
+            imageDownloadUrl = Session.currentUser.getImage();
+            onDone.run();
+        } else {
+            StorageReference imageRef = storageRef.child("images/" + auth.getCurrentUser().getUid() + ".jpg");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageData = baos.toByteArray();
+            // Upload file to Firebase Storage
+            UploadTask uploadTask = imageRef.putBytes(imageData);
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    imageDownloadUrl = uri.toString();
+                    onDone.run();
+                });
+            }).addOnFailureListener(e -> {
+                // Handle failed upload
+                Log.e("TAG", "Upload failed: " + e.getMessage());
             });
-        }).addOnFailureListener(e -> {
-            // Handle failed upload
-            Log.e("TAG", "Upload failed: " + e.getMessage());
-        });
+        }
+
     }
 
     private void openCamera() {

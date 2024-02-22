@@ -1,5 +1,8 @@
 package com.example.myapplication.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 
     private String firstName;
@@ -8,6 +11,7 @@ public class User {
     private String image;
     private String email;
     private String id;
+    private List<PickUpRequest> pickUpRequests = new ArrayList<>();
 
     public User(String firstName, String lastName, String phone, String image, String email, String id) {
         this.firstName = firstName;
@@ -16,6 +20,14 @@ public class User {
         this.image = image;
         this.email = email;
         this.id = id;
+    }
+
+    public List<PickUpRequest> getPickUpRequests() {
+        return pickUpRequests;
+    }
+
+    public void setPickUpRequests(List<PickUpRequest> pickUpRequests) {
+        this.pickUpRequests = pickUpRequests;
     }
 
     public User() {}

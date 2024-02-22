@@ -31,6 +31,19 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    tools:text="Agam"/>
+
+                <TextView
+                    android:id="@+id/phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    tools:text="Holon"/>
+                <TextView
                     android:id="@+id/location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -38,39 +51,23 @@
                     tools:text="Holon"/>
 
                 <TextView
-                    android:id="@+id/type"
+                    android:id="@+id/time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:textStyle="bold"
-                    tools:text="Paper"/>
-
-                <TextView
-                    android:id="@+id/distance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textStyle="bold"
-                    tools:text="35m"/>
-
+                    tools:text="23:00"/>
             </LinearLayout>
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/request"
+            android:id="@+id/approve"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:backgroundTint="@color/material_dynamic_secondary60"
-            android:text="@string/request_pickup"/>
+            android:text="@string/approve"/>
 
-        <Button
-            android:id="@+id/show_pickups"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:backgroundTint="@color/material_dynamic_secondary60"
-            android:text="@string/show_pickups_requests"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

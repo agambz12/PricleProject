@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.CreatePickupRequestDialog;
+import com.example.myapplication.PickUpsRequestsDialog;
 import com.example.myapplication.R;
 import com.example.myapplication.models.RecycleBin;
 import com.example.myapplication.models.RecycleBinData;
@@ -59,6 +60,20 @@ public class RecycleBinsAdapter extends RecyclerView.Adapter<RecycleBinsAdapter.
                 dialog.show(activity.getSupportFragmentManager(),"");
             }
         });
+
+        holder.showRequestsBT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PickUpsRequestsDialog dialog = new PickUpsRequestsDialog(recycleBin);
+                dialog.show(activity.getSupportFragmentManager(),"");
+            }
+        });
+
+        if (recycleBin.getPickUpRequests().size() > 0) {
+            holder.showRequestsBT.setVisibility(View.VISIBLE);
+        } else {
+            holder.showRequestsBT.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -71,7 +86,7 @@ public class RecycleBinsAdapter extends RecyclerView.Adapter<RecycleBinsAdapter.
 
         ImageView image;
         TextView location, type, distance;
-        Button requestBT;
+        Button requestBT, showRequestsBT;
 
         public RecycleBinViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,6 +95,8 @@ public class RecycleBinsAdapter extends RecyclerView.Adapter<RecycleBinsAdapter.
             type = itemView.findViewById(R.id.type);
             distance = itemView.findViewById(R.id.distance);
             requestBT = itemView.findViewById(R.id.request);
+            showRequestsBT = itemView.findViewById(R.id.show_pickups);
+
         }
     }
 }
