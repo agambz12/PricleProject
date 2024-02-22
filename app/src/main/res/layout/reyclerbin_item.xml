@@ -34,6 +34,7 @@
                     android:id="@+id/location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     tools:text="Holon"/>
 
                 <TextView
@@ -41,6 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:textStyle="bold"
                     tools:text="Paper"/>
 
                 <TextView
@@ -48,6 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:textStyle="bold"
                     tools:text="35m"/>
 
             </LinearLayout>
@@ -58,6 +61,8 @@
             android:id="@+id/request"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:backgroundTint="@color/material_dynamic_secondary60"
             android:text="Request PickUp"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
