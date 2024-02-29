@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -18,7 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
 import com.example.myapplication.models.RecycleBinType;
+import com.example.myapplication.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.Locale;
 
@@ -42,8 +47,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
     ImageButton IMcontinuePackaging;
     Button timeButton, createRecycleBinBT;
     int hour,minute;
-
-
+    private User user;
 
 
     @SuppressLint("MissingInflatedId")
@@ -51,6 +55,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        fetchUser();
         IMpaper = (ImageButton) findViewById(R.id.btpaper);
         IMpaper.setOnClickListener(this);
         IMpackaging = (ImageButton) findViewById(R.id.btpackaging);
@@ -67,6 +72,18 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                 startActivity(intent);
             }
         });
+    }
+
+    private void fetchUser() {
+        DataBaseManager.getUser(FirebaseAuth.getInstance().getCurrentUser().getUid(), new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    user = task.getResult().toObject(User.class);
+                }
+            }
+        });
+
     }
 
     public void popTimePicker(View view){
@@ -140,6 +157,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         } else if (view == IMcontinuePaper) {
             Intent intent = new Intent(HomeScreenActivity.this, RecyclerBinListActivity.class);
             intent.putExtra(RecyclerBinListActivity.TYPE, RecycleBinType.PAPER);
+            intent.putExtra("user", user);
             startActivity(intent);
         } else if (view == IMclosePaper) {
             paperDialog.dismiss();
@@ -148,6 +166,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         } else if (view == IMcontinueGlass) {
             Intent intent = new Intent(HomeScreenActivity.this, RecyclerBinListActivity.class);
             intent.putExtra(RecyclerBinListActivity.TYPE, RecycleBinType.GLASS);
+            intent.putExtra("user", user);
             startActivity(intent);
         } else if (view == IMcloseGlass) {
             glassDialog.dismiss();
@@ -156,6 +175,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         } else if (view == IMcontinuePackaging) {
             Intent intent = new Intent(HomeScreenActivity.this, RecyclerBinListActivity.class);
             intent.putExtra(RecyclerBinListActivity.TYPE, RecycleBinType.PACKAGING);
+            intent.putExtra("user", user);
         } else if (view == IMclosePackaging) {
             packagingDialog.dismiss();
         } else if (view == BTNpickup) {
@@ -178,7 +198,8 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         } else if (item.getItemId() == R.id.sign_out) {
             onSignOutClicked();
         } else if (item.getItemId() == R.id.profile) {
-            Intent intent = new Intent(this, CreateOrUpdateProfileActivity.class);
+            Intent intent = new Intent(this, ProfileActivity.class);
+            intent.putExtra ("user", user);
             startActivity(intent);
            return true;
         }

@@ -19,6 +19,7 @@ import com.example.myapplication.PickUpsRequestsDialog;
 import com.example.myapplication.R;
 import com.example.myapplication.models.RecycleBin;
 import com.example.myapplication.models.RecycleBinData;
+import com.example.myapplication.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +28,15 @@ public class RecycleBinsAdapter extends RecyclerView.Adapter<RecycleBinsAdapter.
 
     private List<RecycleBinData> items = new ArrayList<>();
     private AppCompatActivity activity;
+    private User user;
     public void setItems(List<RecycleBinData> items) {
         this.items = items;
     }
 
 
-    public RecycleBinsAdapter(AppCompatActivity activity) {
+    public RecycleBinsAdapter(AppCompatActivity activity, User user) {
         this.activity = activity;
+        this.user = user;
     }
 
     @NonNull
@@ -56,7 +59,7 @@ public class RecycleBinsAdapter extends RecyclerView.Adapter<RecycleBinsAdapter.
         holder.requestBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreatePickupRequestDialog dialog = new CreatePickupRequestDialog(recycleBin);
+                CreatePickupRequestDialog dialog = new CreatePickupRequestDialog(recycleBin, user);
                 dialog.show(activity.getSupportFragmentManager(),"");
             }
         });
@@ -64,7 +67,7 @@ public class RecycleBinsAdapter extends RecyclerView.Adapter<RecycleBinsAdapter.
         holder.showRequestsBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PickUpsRequestsDialog dialog = new PickUpsRequestsDialog(recycleBin);
+                PickUpsRequestsDialog dialog = new PickUpsRequestsDialog(recycleBin, user);
                 dialog.show(activity.getSupportFragmentManager(),"");
             }
         });

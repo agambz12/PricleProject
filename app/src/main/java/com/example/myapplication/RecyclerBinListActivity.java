@@ -6,10 +6,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -19,6 +18,7 @@ import com.example.myapplication.adapters.RecycleBinsAdapter;
 import com.example.myapplication.models.RecycleBin;
 import com.example.myapplication.models.RecycleBinData;
 import com.example.myapplication.models.RecycleBinType;
+import com.example.myapplication.models.User;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,11 +26,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.Consumer;
 
 public class RecyclerBinListActivity extends AppCompatActivity {
@@ -38,6 +36,7 @@ public class RecyclerBinListActivity extends AppCompatActivity {
     public static final String TYPE = "TYPE";
     private RecycleBinType type = RecycleBinType.GLASS;
     private FusedLocationProviderClient fusedLocationClient;
+    private User currentUser;
     private Location myLocation;
     private RecycleBinsAdapter adapter;
     private LocationManager locationManager;
@@ -51,17 +50,21 @@ public class RecyclerBinListActivity extends AppCompatActivity {
         }
     };
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycler_bin_list);
+        setContentView(R.layout.list_layout);
+        currentUser = (User)getIntent().getSerializableExtra("user");
+        progressDialog = ProgressDialog.show(this, "", getString(R.string.please_wait), true, false);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         type = (RecycleBinType) getIntent().getSerializableExtra(TYPE);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         RecyclerView recyclerView = findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecycleBinsAdapter(this);
+        adapter = new RecycleBinsAdapter(this, currentUser);
         recyclerView.setAdapter(adapter);
         findMyLocationIfHasAccess();
 
@@ -88,10 +91,7 @@ public class RecyclerBinListActivity extends AppCompatActivity {
 
         adapter.setItems(items);
         adapter.notifyDataSetChanged();
-
-
-
-
+        progressDialog.dismiss();
     }
 
     private float getDistance(RecycleBin recycleBin) {

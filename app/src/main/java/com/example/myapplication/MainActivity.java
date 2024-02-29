@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     TextInputEditText passwordET, emailET;
     ProgressDialog dialog;
+    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,20 +49,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToHomeScreen() {
-        DataBaseManager.getUser(auth.getCurrentUser().getUid(), new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    Session.currentUser = task.getResult().toObject(User.class);
-                    Intent intent = new Intent(MainActivity.this, HomeScreenActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    AlertDialogUtils.showAlertDialog(MainActivity.this, getString(R.string.error), task.getException().getMessage());
-                }
-            }
-        });
-
+        Intent intent = new Intent(MainActivity.this, HomeScreenActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void onLoginButtonClicked() {

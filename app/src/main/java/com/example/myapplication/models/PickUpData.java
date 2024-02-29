@@ -1,15 +1,15 @@
 package com.example.myapplication.models;
 
 public class PickUpData {
-    private PickUpRequest pickUpRequest;
+    private OrderRequest orderRequest;
     private User created;
 
-    public PickUpRequest getPickUpRequest() {
-        return pickUpRequest;
+    public OrderRequest getPickUpRequest() {
+        return orderRequest;
     }
 
-    public void setPickUpRequest(PickUpRequest pickUpRequest) {
-        this.pickUpRequest = pickUpRequest;
+    public void setPickUpRequest(OrderRequest orderRequest) {
+        this.orderRequest = orderRequest;
     }
 
     public User getCreated() {
@@ -20,8 +20,8 @@ public class PickUpData {
         this.created = created;
     }
 
-    public PickUpData(PickUpRequest pickUpRequest, User created) {
-        this.pickUpRequest = pickUpRequest;
+    public PickUpData(OrderRequest orderRequest, User created) {
+        this.orderRequest = orderRequest;
         this.created = created;
     }
 }

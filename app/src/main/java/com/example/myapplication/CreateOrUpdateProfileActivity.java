@@ -101,23 +101,23 @@ public class CreateOrUpdateProfileActivity extends AppCompatActivity {
 
         createBT = findViewById(R.id.create);
         createBT.setOnClickListener(v-> createProfile());
-        if (Session.currentUser != null) {
-            updateUserFields();
-        }
+//        if (Session.currentUser != null) {
+//            updateUserFields();
+//        }
 
 
     }
 
     private void updateUserFields() {
-        ETemail.setText(Session.currentUser.getEmail());
-        ETname.setText(Session.currentUser.getFirstName());
-        ETlastName.setText(Session.currentUser.getLastName());
-        ETphoneNumber.setText(Session.currentUser.getPhone());
-        createBT.setText(getString(R.string.save));
-        Glide.with(this).load(Session.currentUser.getImage()).centerCrop()
-                //.placeholder(R.drawable.loading_spinner)
-                .into(profileImg);
-        title.setText(getString(R.string.update_your_account_details));
+//        ETemail.setText(Session.currentUser.getEmail());
+//        ETname.setText(Session.currentUser.getFirstName());
+//        ETlastName.setText(Session.currentUser.getLastName());
+//        ETphoneNumber.setText(Session.currentUser.getPhone());
+//        createBT.setText(getString(R.string.save));
+//        Glide.with(this).load(Session.currentUser.getImage()).centerCrop()
+//                //.placeholder(R.drawable.loading_spinner)
+//                .into(profileImg);
+//        title.setText(getString(R.string.update_your_account_details));
     }
 
     private void createProfile() {
@@ -146,14 +146,14 @@ public class CreateOrUpdateProfileActivity extends AppCompatActivity {
             public void run() {
                 User user = new User(ETname.getText().toString(), ETlastName.getText().toString(),
                         ETphoneNumber.getText().toString(), imageDownloadUrl, auth.getCurrentUser().getEmail(), auth.getCurrentUser().getUid());
-                if (Session.currentUser != null) {
-                    user.setPickUpRequests(Session.currentUser.getPickUpRequests());
-                }
+//                if (Session.currentUser != null) {
+//                    user.setPickUpRequests(Session.currentUser.getPickUpRequests());
+//                }
                 DataBaseManager.createUser(user, new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
-                            Session.currentUser = user;
+                           // Session.currentUser = user;
                             Toast.makeText(CreateOrUpdateProfileActivity.this, R.string.create_successfully, Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(CreateOrUpdateProfileActivity.this, HomeScreenActivity.class);
                             startActivity(intent);
@@ -170,7 +170,7 @@ public class CreateOrUpdateProfileActivity extends AppCompatActivity {
 
     private void uploadImageToStorage(Runnable onDone) {
         if (imageBitmap == null) {// this is update
-            imageDownloadUrl = Session.currentUser.getImage();
+            //imageDownloadUrl = Session.currentUser.getImage();
             onDone.run();
         } else {
             StorageReference imageRef = storageRef.child("images/" + auth.getCurrentUser().getUid() + ".jpg");

@@ -2,20 +2,31 @@ package com.example.myapplication.models;
 
 import java.io.Serializable;
 
-public class PickUpRequest implements Serializable {
+public class OrderRequest implements Serializable {
 
     private String createdUserId, pickUpUserId, id;
     private Location location;
+    private long date;
     private int hour, min;
 
-    public PickUpRequest(){}
 
-    public PickUpRequest(String id, String createdUserId, Location location, int hour, int min) {
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public OrderRequest(){}
+
+    public OrderRequest(String id, long data , String createdUserId, Location location, int hour, int min) {
         this.id = id;
         this.createdUserId = createdUserId;
         this.location = location;
         this.hour = hour;
         this.min = min;
+        this.date = data;
     }
 
     public String getCreatedUserId() {

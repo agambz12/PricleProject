@@ -1,9 +1,10 @@
 package com.example.myapplication.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
 
     private String firstName;
     private String lastName;
@@ -11,7 +12,9 @@ public class User {
     private String image;
     private String email;
     private String id;
-    private List<PickUpRequest> pickUpRequests = new ArrayList<>();
+    private List<OrderRequest> myCreatedOrders = new ArrayList<>();
+    private List<OrderRequest> myOrdersPickUp = new ArrayList<>();
+
 
     public User(String firstName, String lastName, String phone, String image, String email, String id) {
         this.firstName = firstName;
@@ -22,12 +25,21 @@ public class User {
         this.id = id;
     }
 
-    public List<PickUpRequest> getPickUpRequests() {
-        return pickUpRequests;
+
+    public List<OrderRequest> getMyCreatedOrders() {
+        return myCreatedOrders;
     }
 
-    public void setPickUpRequests(List<PickUpRequest> pickUpRequests) {
-        this.pickUpRequests = pickUpRequests;
+    public void setMyCreatedOrders(List<OrderRequest> myCreatedOrders) {
+        this.myCreatedOrders = myCreatedOrders;
+    }
+
+    public List<OrderRequest> getMyOrdersPickUp() {
+        return myOrdersPickUp;
+    }
+
+    public void setMyOrdersPickUp(List<OrderRequest> myOrdersPickUp) {
+        this.myOrdersPickUp = myOrdersPickUp;
     }
 
     public User() {}
@@ -78,5 +90,9 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
     }
 }

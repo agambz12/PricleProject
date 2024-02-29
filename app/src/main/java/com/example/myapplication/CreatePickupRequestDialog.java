@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.location.Address;
@@ -12,7 +13,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
 
-import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -20,22 +20,26 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.myapplication.models.Location;
-import com.example.myapplication.models.PickUpRequest;
+import com.example.myapplication.models.OrderRequest;
 import com.example.myapplication.models.RecycleBin;
+import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 import java.util.UUID;
 
 public class CreatePickupRequestDialog extends DialogFragment {
 
+    private final User currentUser;
     private TextInputEditText addressET, phoneET, fullNameET;
-    private Button timeBT;
+    private Button timeBT, dataBT;
     private Address address;
     int pickUpHour, pickUpMin;
     private final RecycleBin recycleBin;
+    private long selectedDate = System.currentTimeMillis();
 
 
     ActivityResultLauncher<Intent> mapLauncher =
@@ -49,9 +53,10 @@ public class CreatePickupRequestDialog extends DialogFragment {
             );
 
 
-    public CreatePickupRequestDialog(RecycleBin recycleBin) {
+    public CreatePickupRequestDialog(RecycleBin recycleBin, User currentUser) {
         super();
         this.recycleBin = recycleBin;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -67,16 +72,45 @@ public class CreatePickupRequestDialog extends DialogFragment {
         phoneET = view.findViewById(R.id.phone);
         fullNameET = view.findViewById(R.id.full_name);
 
-        fullNameET.setText(Session.currentUser.getFirstName() + " " + Session.currentUser.getLastName());
-        phoneET.setText(Session.currentUser.getPhone());
+        fullNameET.setText(currentUser.getFullName());
+        phoneET.setText(currentUser.getPhone());
         Button saveBT = view.findViewById(R.id.send_pickup);
         timeBT = view.findViewById(R.id.timeButton);
         ImageButton backBT = view.findViewById(R.id.btbackpickup);
         addressET.setOnClickListener(v -> openMapScreen());
         timeBT.setOnClickListener(v -> openTimePicker());
+        dataBT = view.findViewById(R.id.date);
+        dataBT.setOnClickListener(v -> openCalender());
         saveBT.setOnClickListener(v -> savePickUpRequest());
         backBT.setOnClickListener(v -> dismiss());
         return view;
+    }
+
+    private void openCalender() {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(System.currentTimeMillis());
+
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+
+        DatePickerDialog pickerDialog = new DatePickerDialog(this.getContext(), (view, y, m, d) -> {
+            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            cal.setTimeInMillis(0);
+            cal.set(Calendar.DAY_OF_MONTH, d);
+            cal.set(Calendar.MONTH, m);
+            cal.set(Calendar.YEAR, y);
+            onDateSelected(cal.getTimeInMillis());
+        }, year, month, day);
+
+        pickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        pickerDialog.show();
+    }
+
+    private void onDateSelected(long timeInMillis) {
+        selectedDate = timeInMillis;
+        dataBT.setText(DateUtils.dateToStr(selectedDate));
     }
 
     private void savePickUpRequest() {
@@ -97,10 +131,10 @@ public class CreatePickupRequestDialog extends DialogFragment {
     }
 
     private void createRequest() {
-        PickUpRequest pickUpRequest = new PickUpRequest(UUID.randomUUID().toString(), Session.currentUser.getId(),
+        OrderRequest orderRequest = new OrderRequest(UUID.randomUUID().toString(),selectedDate, currentUser.getId(),
                 new Location(addressET.getText().toString(), address.getLatitude(), address.getLongitude())
         , pickUpHour, pickUpMin);
-        DataBaseManager.createPickUpRequest(pickUpRequest, recycleBin, new OnCompleteListener<Void>() {
+        DataBaseManager.createPickUpRequest(orderRequest, recycleBin, currentUser, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 CreatePickupRequestDialog.this.dismiss();
@@ -120,7 +154,7 @@ public class CreatePickupRequestDialog extends DialogFragment {
                                           int minute) {
                         pickUpHour = hourOfDay;
                         pickUpMin = minute;
-                        //timeET.setText(hourOfDay + ":" + minute);
+                        timeBT.setText(hourOfDay + ":" + minute);
                     }
                 }, pickUpHour, pickUpMin, true);
         timePickerDialog.show();

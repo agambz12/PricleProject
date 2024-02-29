@@ -36,4 +36,10 @@
     <string name="approve">Approve</string>
     <string name="my_profile">My Profile</string>
     <string name="update_your_account_details">Update Your Account Details</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="my_created_orders">My orders requests</string>
+    <string name="my_pick_up">My Pick up</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="select_hour">Select Hour</string>
+    <string name="select_data">Select Date</string>
 </resources>
