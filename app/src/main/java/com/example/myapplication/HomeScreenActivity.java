@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -24,6 +25,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Locale;
 
@@ -63,7 +66,6 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         IMglass = (ImageButton) findViewById(R.id.btglass);
         IMglass.setOnClickListener(this);
 
-        //timeButton=findViewById(R.id.timeButton);
         createRecycleBinBT = findViewById(R.id.create_recycle_bin);
         createRecycleBinBT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,10 +82,19 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     user = task.getResult().toObject(User.class);
+                    registerToUserChanges();
                 }
             }
         });
+    }
 
+    private void registerToUserChanges() {
+        DataBaseManager.registerToUserChanges(user, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                user = value.toObject(User.class);
+            }
+        });
     }
 
     public void popTimePicker(View view){
@@ -176,6 +187,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
             Intent intent = new Intent(HomeScreenActivity.this, RecyclerBinListActivity.class);
             intent.putExtra(RecyclerBinListActivity.TYPE, RecycleBinType.PACKAGING);
             intent.putExtra("user", user);
+            startActivity(intent);
         } else if (view == IMclosePackaging) {
             packagingDialog.dismiss();
         } else if (view == BTNpickup) {

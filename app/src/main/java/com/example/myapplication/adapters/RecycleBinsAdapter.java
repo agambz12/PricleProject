@@ -1,7 +1,5 @@
 package com.example.myapplication.adapters;
 
-import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +70,7 @@ public class RecycleBinsAdapter extends RecyclerView.Adapter<RecycleBinsAdapter.
             }
         });
 
-        if (recycleBin.getPickUpRequests().size() > 0) {
+        if (recycleBin.getPickUpRequests().size() > 0 && recycleBin.getPickUpRequests().stream().noneMatch(orderRequest -> orderRequest.getCreatedUserId().equals(user.getId()))) {
             holder.showRequestsBT.setVisibility(View.VISIBLE);
         } else {
             holder.showRequestsBT.setVisibility(View.GONE);

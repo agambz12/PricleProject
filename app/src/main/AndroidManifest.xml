@@ -24,6 +24,7 @@
             android:exported="false" />
         <activity
             android:name=".RecyclerBinListActivity"
+            android:theme="@style/AppNoAction"
             android:exported="false" />
         <activity
             android:name=".CreateRecycleBinActivity"

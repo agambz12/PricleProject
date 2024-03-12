@@ -13,7 +13,7 @@ import com.example.myapplication.models.User;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private ProfileSection requestsPS, pickUpsPS, editPS;
+    private ProfileSection myRequestsPS, pickUpsPS, editPS;
     private ImageView profileIV;
     private TextView nameTV;
     private User currentUser;
@@ -25,9 +25,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         currentUser = (User) getIntent().getSerializableExtra("user");
 
-        requestsPS = findViewById(R.id.my_requests);
-        requestsPS.setTitle(getString(R.string.my_created_orders));
-        requestsPS.setOnClickListener(v-> openOrdersScreen());
+        myRequestsPS = findViewById(R.id.my_requests);
+        myRequestsPS.setTitle(getString(R.string.my_created_orders));
         pickUpsPS = findViewById(R.id.my_pick_ups);
         pickUpsPS.setTitle(getString(R.string.my_pick_up));
         editPS = findViewById(R.id.edit_profile);
@@ -42,11 +41,20 @@ public class ProfileActivity extends AppCompatActivity {
                 //.placeholder(R.drawable.loading_spinner)
                 .into(profileIV);
 
+        myRequestsPS.setOnClickListener(v -> openOrdersScreen(true));
+        pickUpsPS.setOnClickListener(v -> openOrdersScreen(false));
+        editPS.setOnClickListener(v -> goToEditProfileScreen());
     }
 
-    private void openOrdersScreen() {
+    private void goToEditProfileScreen() {
+        Intent intent = new Intent(this, CreateOrUpdateProfileActivity.class);
+        intent.putExtra("user", currentUser);
+        startActivity(intent);
+    }
+
+    private void openOrdersScreen(boolean showCreated) {
         Intent intent = new Intent(this, OrdersActivity.class);
-        intent.putExtra("showCreated", true);
+        intent.putExtra("showCreated", showCreated);
         intent.putExtra("user", currentUser);
         startActivity(intent);
     }

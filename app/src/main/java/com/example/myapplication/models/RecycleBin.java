@@ -8,7 +8,7 @@ public class RecycleBin implements Serializable {
     private String imageUrl;
     private Location location;
     private RecycleBinType type;
-    private ArrayList<OrderRequest> orderRequests = new ArrayList<>();
+    private ArrayList<OrderRequest> pickUpRequests = new ArrayList<>();
     private String id;
 
     public RecycleBinType getType() {
@@ -37,7 +37,7 @@ public class RecycleBin implements Serializable {
     }
 
     public ArrayList<OrderRequest> getPickUpRequests() {
-        return orderRequests;
+        return pickUpRequests;
     }
 
     public String getImageUrl() {

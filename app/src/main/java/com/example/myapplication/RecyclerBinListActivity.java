@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.myapplication.adapters.RecycleBinsAdapter;
 import com.example.myapplication.models.RecycleBin;
@@ -66,6 +68,17 @@ public class RecyclerBinListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RecycleBinsAdapter(this, currentUser);
         recyclerView.setAdapter(adapter);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.find_your_recycle_bin);
+        toolbar.setNavigationIcon(R.drawable.back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        this.setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.menu_home);
         findMyLocationIfHasAccess();
 
     }

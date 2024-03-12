@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.location.Address;
@@ -26,6 +27,9 @@ import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -33,13 +37,14 @@ import java.util.UUID;
 
 public class CreatePickupRequestDialog extends DialogFragment {
 
-    private final User currentUser;
+    private User currentUser;
     private TextInputEditText addressET, phoneET, fullNameET;
     private Button timeBT, dataBT;
     private Address address;
     int pickUpHour, pickUpMin;
     private final RecycleBin recycleBin;
     private long selectedDate = System.currentTimeMillis();
+    private ProgressDialog progressDialog;
 
 
     ActivityResultLauncher<Intent> mapLauncher =
@@ -51,7 +56,6 @@ public class CreatePickupRequestDialog extends DialogFragment {
                         }
                     }
             );
-
 
     public CreatePickupRequestDialog(RecycleBin recycleBin, User currentUser) {
         super();
@@ -117,26 +121,36 @@ public class CreatePickupRequestDialog extends DialogFragment {
         boolean isValidInput = true;
         if (addressET.getText().equals("")) {
             addressET.setError(getString(R.string.please_enter_your_address));
-            isValidInput= false;
+            isValidInput = false;
         }
-//        if (timeET.getText().equals("")) {
-//            addressET.setError(getString(R.string.please_enter_your_pick_up_time));
-//            isValidInput= false;
-//        }
+        if (phoneET.getText().equals("")) {
+            phoneET.setError(getString(R.string.please_enter_your_phone));
+            isValidInput = false;
+        }
+
+        if (dataBT.getText().toString().contains("Select")) {
+            dataBT.setError(getString(R.string.please_choose_pick_up_date));
+            isValidInput = false;
+        }
+        if (timeBT.getText().toString().contains("Select")) {
+            timeBT.setError(getString(R.string.please_choose_pick_up_date));
+            isValidInput = false;
+        }
         
         if (isValidInput) {
             createRequest();
         }
-        
     }
 
     private void createRequest() {
+        progressDialog = ProgressDialog.show(this.getContext(), "", getString(R.string.please_wait), true, false);
         OrderRequest orderRequest = new OrderRequest(UUID.randomUUID().toString(),selectedDate, currentUser.getId(),
                 new Location(addressET.getText().toString(), address.getLatitude(), address.getLongitude())
         , pickUpHour, pickUpMin);
         DataBaseManager.createPickUpRequest(orderRequest, recycleBin, currentUser, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                progressDialog.dismiss();
                 CreatePickupRequestDialog.this.dismiss();
             }
         });

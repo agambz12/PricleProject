@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,16 +67,28 @@ public class PickUpsRequestsDialog extends DialogFragment {
 
     private void onItemClicked(int position) {
         OrderRequest request = pickUpsDataList.get(position).getPickUpRequest();
-        currentUser.getMyOrdersPickUp().add(request);
-        recycleBin.getPickUpRequests().removeIf(new Predicate<OrderRequest>() {
-            @Override
-            public boolean test(OrderRequest orderRequest) {
-                return orderRequest.getId().equals(request.getId());
-            }
-        });
-        DataBaseManager.updatePickUpRequest(recycleBin, currentUser);
-        pickUpsDataList.remove(position);
-        pickUpsRequestsAdapter.notifyItemRemoved(position);
+        AlertDialogUtils.showOptionsAlertDialog(this.getContext(), getString(R.string.alarm),
+                getString(R.string.are_you_sure), getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        currentUser.getMyOrdersPickUp().add(request);
+                        recycleBin.getPickUpRequests().removeIf(new Predicate<OrderRequest>() {
+                            @Override
+                            public boolean test(OrderRequest orderRequest) {
+                                return orderRequest.getId().equals(request.getId());
+                            }
+                        });
+                        DataBaseManager.updatePickUpRequest(recycleBin, currentUser);
+                        pickUpsDataList.remove(position);
+                        pickUpsRequestsAdapter.notifyItemRemoved(position);
+                    }
+                }, getString(R.string.cancle), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
     }
 
     private void fetchData() {

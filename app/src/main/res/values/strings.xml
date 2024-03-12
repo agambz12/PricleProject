@@ -7,6 +7,8 @@
     <string name="sign_out">Sign out</string>
     <string name="alarm">Alarm!</string>
     <string name="are_you_sure_sign_out">Are you sure you want to sign out?</string>
+    <string name="are_you_sure">Are you sure?</string>
+
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="name">Name</string>
@@ -16,6 +18,9 @@
     <string name="please_enter_your_name">Please Enter your name</string>
     <string name="please_enter_your_last_name">Please Enter your last name</string>
     <string name="please_enter_your_phone">Please Enter your phone number</string>
+    <string name="please_choose_pick_up_date">Please choose pick up date</string>
+    <string name="please_choose_pick_up_time">Please choose pick up time</string>
+
     <string name="create_successfully">Create successfully</string>
     <string name="save">Save</string>
     <string name="address">Address</string>
@@ -33,13 +38,16 @@
     <string name="show_pickups_requests">Show Pickups Requests</string>
     <string name="request_pickup">Request Pick Up</string>
     <string name="requets">Requests</string>
-    <string name="approve">Approve</string>
+    <string name="approve">I want to pick up!</string>
     <string name="my_profile">My Profile</string>
     <string name="update_your_account_details">Update Your Account Details</string>
     <string name="please_wait">Please wait...</string>
-    <string name="my_created_orders">My orders requests</string>
-    <string name="my_pick_up">My Pick up</string>
+    <string name="my_created_orders">My Created requests</string>
+    <string name="my_pick_up">My Pick up requests</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="select_hour">Select Hour</string>
     <string name="select_data">Select Date</string>
+    <string name="profile_is_updated_successfully">Profile updated successfully</string>
+    <string name="cancle">Cancle</string>
+    <string name="find_your_recycle_bin">Find your recycle bin</string>
 </resources>

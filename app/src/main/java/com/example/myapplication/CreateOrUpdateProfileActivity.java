@@ -1,13 +1,18 @@
 package com.example.myapplication;
 
+import static android.provider.MediaStore.Images.Media.getBitmap;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -45,7 +50,8 @@ public class CreateOrUpdateProfileActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private String imageDownloadUrl;
     private TextView title;
-
+    private User currentUser;
+    private ProgressDialog progressDialog;
 
     private ActivityResultLauncher<Intent> cameraActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -64,7 +70,7 @@ public class CreateOrUpdateProfileActivity extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     try {
                         Uri uri = result.getData().getData();
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                        Bitmap bitmap = getBitmap(this.getContentResolver(), uri);
                         imageBitmap = bitmap;
                         profileImg.setImageBitmap(bitmap);
                     } catch (Exception e) {
@@ -77,6 +83,7 @@ public class CreateOrUpdateProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        currentUser = (User) getIntent().getSerializableExtra("user");
         auth = FirebaseAuth.getInstance();
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -101,23 +108,22 @@ public class CreateOrUpdateProfileActivity extends AppCompatActivity {
 
         createBT = findViewById(R.id.create);
         createBT.setOnClickListener(v-> createProfile());
-//        if (Session.currentUser != null) {
-//            updateUserFields();
-//        }
+        if (currentUser != null) {
+            updateUserFields();
+        }
 
 
     }
 
     private void updateUserFields() {
-//        ETemail.setText(Session.currentUser.getEmail());
-//        ETname.setText(Session.currentUser.getFirstName());
-//        ETlastName.setText(Session.currentUser.getLastName());
-//        ETphoneNumber.setText(Session.currentUser.getPhone());
-//        createBT.setText(getString(R.string.save));
-//        Glide.with(this).load(Session.currentUser.getImage()).centerCrop()
-//                //.placeholder(R.drawable.loading_spinner)
-//                .into(profileImg);
-//        title.setText(getString(R.string.update_your_account_details));
+        ETemail.setText(currentUser.getEmail());
+        ETname.setText(currentUser.getFirstName());
+        ETlastName.setText(currentUser.getLastName());
+        ETphoneNumber.setText(currentUser.getPhone());
+        createBT.setText(getString(R.string.save));
+        Glide.with(this).load(currentUser.getImage()).centerCrop()
+                .into(profileImg);
+        title.setText(getString(R.string.update_your_account_details));
     }
 
     private void createProfile() {
@@ -141,20 +147,23 @@ public class CreateOrUpdateProfileActivity extends AppCompatActivity {
     }
 
     private void saveUser() {
+        progressDialog = ProgressDialog.show(this, "", getString(R.string.please_wait), true, false);
         uploadImageToStorage(new Runnable() {
             @Override
             public void run() {
                 User user = new User(ETname.getText().toString(), ETlastName.getText().toString(),
                         ETphoneNumber.getText().toString(), imageDownloadUrl, auth.getCurrentUser().getEmail(), auth.getCurrentUser().getUid());
-//                if (Session.currentUser != null) {
-//                    user.setPickUpRequests(Session.currentUser.getPickUpRequests());
-//                }
+                if (currentUser != null) {
+                    user.setMyCreatedOrders(currentUser.getMyCreatedOrders());
+                    user.setMyOrdersPickUp(currentUser.getMyOrdersPickUp());
+                }
                 DataBaseManager.createUser(user, new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
+                        progressDialog.dismiss();
                         if (task.isSuccessful()) {
-                           // Session.currentUser = user;
-                            Toast.makeText(CreateOrUpdateProfileActivity.this, R.string.create_successfully, Toast.LENGTH_SHORT).show();
+                            int title = currentUser == null ? R.string.create_successfully : R.string.profile_is_updated_successfully;
+                            Toast.makeText(CreateOrUpdateProfileActivity.this, title, Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(CreateOrUpdateProfileActivity.this, HomeScreenActivity.class);
                             startActivity(intent);
                             finish();
@@ -169,8 +178,8 @@ public class CreateOrUpdateProfileActivity extends AppCompatActivity {
     }
 
     private void uploadImageToStorage(Runnable onDone) {
-        if (imageBitmap == null) {// this is update
-            //imageDownloadUrl = Session.currentUser.getImage();
+        if (imageBitmap == null) {// its update
+            imageDownloadUrl = currentUser.getImage();
             onDone.run();
         } else {
             StorageReference imageRef = storageRef.child("images/" + auth.getCurrentUser().getUid() + ".jpg");
@@ -189,6 +198,8 @@ public class CreateOrUpdateProfileActivity extends AppCompatActivity {
                 Log.e("TAG", "Upload failed: " + e.getMessage());
             });
         }
+
+
 
     }
 
