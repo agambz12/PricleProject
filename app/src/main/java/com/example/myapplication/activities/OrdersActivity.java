@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import com.example.myapplication.DataBaseManager;
+import com.example.myapplication.R;
 import com.example.myapplication.adapters.PickUpsRequestsAdapter;
 import com.example.myapplication.models.OrderRequest;
 import com.example.myapplication.models.PickUpData;

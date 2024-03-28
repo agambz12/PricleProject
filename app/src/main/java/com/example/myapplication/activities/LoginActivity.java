@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,19 +7,21 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.myapplication.AlertDialogUtils;
+import com.example.myapplication.R;
 import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     FirebaseAuth auth;
     TextInputEditText passwordET, emailET;
     ProgressDialog dialog;
     private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,14 +44,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.logonGuest).setOnClickListener(view->{
-            Intent guest= new Intent(MainActivity.this, HomeScreenActivity.class);
+            Intent guest= new Intent(LoginActivity.this, HomeScreenActivity.class);
             startActivity(guest);
         });
 
     }
 
     private void goToHomeScreen() {
-        Intent intent = new Intent(MainActivity.this, HomeScreenActivity.class);
+        Intent intent = new Intent(LoginActivity.this, HomeScreenActivity.class);
         startActivity(intent);
         finish();
     }
@@ -60,10 +62,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(MainActivity.this, HomeScreenActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, HomeScreenActivity.class);
                             startActivity(intent);
                         } else {
-                            AlertDialogUtils.showAlertDialog(MainActivity.this, getString(R.string.error), task.getException().getMessage());
+                            AlertDialogUtils.showAlertDialog(LoginActivity.this, getString(R.string.error), task.getException().getMessage());
                         }
                     }
                 });
@@ -75,11 +77,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Intent intent = new Intent(MainActivity.this, CreateOrUpdateProfileActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, CreateOrUpdateProfileActivity.class);
                     intent.putExtra(CreateOrUpdateProfileActivity.CREATE_PROFILE, true);
                     startActivity(intent);
                 } else {
-                    AlertDialogUtils.showAlertDialog(MainActivity.this, getString(R.string.error), task.getException().getMessage());
+                    AlertDialogUtils.showAlertDialog(LoginActivity.this, getString(R.string.error), task.getException().getMessage());
                 }
             }
         });

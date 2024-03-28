@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.R;
+import com.example.myapplication.activities.CreateOrUpdateProfileActivity;
+import com.example.myapplication.activities.OrdersActivity;
 import com.example.myapplication.customviews.ProfileSection;
 import com.example.myapplication.models.User;
 

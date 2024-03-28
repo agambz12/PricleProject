@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +16,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.myapplication.DataBaseManager;
+import com.example.myapplication.R;
 import com.example.myapplication.adapters.RecycleBinsAdapter;
 import com.example.myapplication.models.RecycleBin;
 import com.example.myapplication.models.RecycleBinData;
@@ -42,16 +44,7 @@ public class RecyclerBinListActivity extends AppCompatActivity {
     private Location myLocation;
     private RecycleBinsAdapter adapter;
     private LocationManager locationManager;
-    int LOCATION_REFRESH_TIME = 15000; // 15 seconds to update
-    int LOCATION_REFRESH_DISTANCE = 500; // 500 meters to update
-    private final LocationListener mLocationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(final Location location) {
-            myLocation = location;
-            fetchRecycleBins();
-        }
-    };
-
+    private List<RecycleBinData> items = new ArrayList<>();
     private ProgressDialog progressDialog;
 
     @Override
@@ -69,6 +62,7 @@ public class RecyclerBinListActivity extends AppCompatActivity {
         adapter = new RecycleBinsAdapter(this, currentUser);
         recyclerView.setAdapter(adapter);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.find_your_recycle_bin);
         toolbar.setNavigationIcon(R.drawable.back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -77,14 +71,12 @@ public class RecyclerBinListActivity extends AppCompatActivity {
                 finish();
             }
         });
-        this.setSupportActionBar(toolbar);
         toolbar.inflateMenu(R.menu.menu_home);
         findMyLocationIfHasAccess();
 
     }
 
     private void initializeItems(Task<QuerySnapshot> task) {
-        List<RecycleBinData> items = new ArrayList<>();
         task.getResult().forEach(new Consumer<QueryDocumentSnapshot>() {
             @Override
             public void accept(QueryDocumentSnapshot queryDocumentSnapshot) {
@@ -131,9 +123,13 @@ public class RecyclerBinListActivity extends AppCompatActivity {
     }
 
     private void findMyLocation() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-                    LOCATION_REFRESH_DISTANCE, mLocationListener);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            fetchRecycleBins();
+        } else {
+            fetchRecycleBins();
         }
     }
 
@@ -141,7 +137,9 @@ public class RecyclerBinListActivity extends AppCompatActivity {
         DataBaseManager.getRecycleBins(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                initializeItems(task);
+                if (task.isSuccessful()) {
+                    initializeItems(task);
+                }
             }
         });
 

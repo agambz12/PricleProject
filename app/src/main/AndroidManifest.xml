@@ -6,6 +6,10 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -17,23 +21,23 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".OrdersActivity"
+            android:name=".activities.OrdersActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".activities.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".RecyclerBinListActivity"
+            android:name=".activities.RecyclerBinListActivity"
             android:theme="@style/AppNoAction"
             android:exported="false" />
         <activity
-            android:name=".CreateRecycleBinActivity"
+            android:name=".activities.CreateRecycleBinActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateOrUpdateProfileActivity"
+            android:name=".activities.CreateOrUpdateProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".MapActivity"
+            android:name=".activities.MapActivity"
             android:exported="false" />
         <activity
             android:name=".LogInActivity"
@@ -42,13 +46,13 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeScreenActivity"
+            android:name=".activities.HomeScreenActivity"
             android:exported="false" />
         <activity
-            android:name=".FindMyLocationActivity"
+            android:name=".activities.FindMyLocationActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,12 +61,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.LoginActivity"
             android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBhzCnlhgoQ5gaZRIfr5RK8W329jz9w1j8" />
+
+        <receiver android:name=".alarmmanager.AlarmReceiver" />
+
     </application>
 
 </manifest>

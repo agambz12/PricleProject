@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+
+import com.example.myapplication.R;
 
 public class SplashActivity extends AppCompatActivity {
     Intent intent;
@@ -23,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         public void onFinish() {
-            intent= new Intent(SplashActivity.this,MainActivity.class);
+            intent= new Intent(SplashActivity.this, LoginActivity.class);
             if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.LOLLIPOP){
                 startActivity(intent);
                 overridePendingTransition(R.anim.trans_right_in,R.anim.trans_right_out);

@@ -1,5 +1,7 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
+import com.example.myapplication.AlertDialogUtils;
+import com.example.myapplication.DataBaseManager;
+import com.example.myapplication.R;
 import com.example.myapplication.models.RecycleBinType;
 import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -52,11 +57,19 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
     int hour,minute;
     private User user;
 
+    private ActivityResultLauncher<String> notificationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (!isGranted) {
+                    AlertDialogUtils.showAlertDialog(this, getString(R.string.pay_attention), getString(R.string.notificationError));
+                } else {
+                }
+            });
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS);
         setContentView(R.layout.activity_home_screen);
         fetchUser();
         IMpaper = (ImageButton) findViewById(R.id.btpaper);
@@ -119,7 +132,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         paperDialog = new Dialog(this);
         paperDialog.setContentView(R.layout.paper_dialog);
         paperDialog.setCancelable(true);
-        IMcontinuePaper = (ImageButton) paperDialog.findViewById(R.id.btGoPaper);
+        IMcontinuePaper = (ImageButton) paperDialog.findViewById(R.id.go);
         IMcontinuePaper.setOnClickListener(this);
         IMclosePaper = (ImageButton) paperDialog.findViewById(R.id.btbackpaper);
         IMclosePaper.setOnClickListener(this);
@@ -130,9 +143,9 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         glassDialog = new Dialog(this);
         glassDialog.setContentView(R.layout.glass_dialog);
         glassDialog.setCancelable(true);
-        IMcontinueGlass = (ImageButton) glassDialog.findViewById(R.id.btGoGlass);
+        IMcontinueGlass = (ImageButton) glassDialog.findViewById(R.id.go);
         IMcontinueGlass.setOnClickListener(this);
-        IMcloseGlass = (ImageButton) glassDialog.findViewById(R.id.btbackglass);
+        IMcloseGlass = (ImageButton) glassDialog.findViewById(R.id.btbackpaper);
         IMcloseGlass.setOnClickListener(this);
         glassDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         glassDialog.show();
@@ -144,9 +157,9 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         packagingDialog.setContentView(R.layout.packaging_dialog);
         packagingDialog.setCancelable(true);
         packagingDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);;
-        IMcontinuePackaging = (ImageButton) packagingDialog.findViewById(R.id.btGoPackaging);
+        IMcontinuePackaging = (ImageButton) packagingDialog.findViewById(R.id.go);
         IMcontinuePackaging.setOnClickListener(this);
-        IMclosePackaging = (ImageButton) packagingDialog.findViewById(R.id.btbackpackaging);
+        IMclosePackaging = (ImageButton) packagingDialog.findViewById(R.id.btbackpaper);
         IMclosePackaging.setOnClickListener(this);
         packagingDialog.show();
     }
@@ -235,7 +248,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
 
     private void goToMainActivity() {
         FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }

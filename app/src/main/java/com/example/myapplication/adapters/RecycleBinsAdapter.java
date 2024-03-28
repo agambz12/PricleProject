@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.myapplication.CreatePickupRequestDialog;
-import com.example.myapplication.PickUpsRequestsDialog;
+import com.example.myapplication.dialogfragments.CreatePickupRequestDialog;
+import com.example.myapplication.dialogfragments.PickUpsRequestsDialog;
 import com.example.myapplication.R;
 import com.example.myapplication.models.RecycleBin;
 import com.example.myapplication.models.RecycleBinData;

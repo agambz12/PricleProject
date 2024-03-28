@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -22,6 +22,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.myapplication.AlertDialogUtils;
+import com.example.myapplication.DataBaseManager;
+import com.example.myapplication.R;
 import com.example.myapplication.models.Location;
 import com.example.myapplication.models.RecycleBin;
 import com.example.myapplication.models.RecycleBinType;
@@ -33,9 +36,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class CreateRecycleBinActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 

@@ -50,4 +50,8 @@
     <string name="profile_is_updated_successfully">Profile updated successfully</string>
     <string name="cancle">Cancle</string>
     <string name="find_your_recycle_bin">Find your recycle bin</string>
+    <string name="you_have_to_pick_up_alarm">You have to pick up the order of %1$s about 10 min</string>
+    <string name="pick_up_alarm">Pick up alarm!</string>
+    <string name="pay_attention">Pay Attention!</string>
+    <string name="notificationError">"You will no recieve any notifications about pick ups alert "</string>
 </resources>

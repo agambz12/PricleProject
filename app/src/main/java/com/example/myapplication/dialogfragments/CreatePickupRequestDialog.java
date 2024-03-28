@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.dialogfragments;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -20,6 +20,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.myapplication.DataBaseManager;
+import com.example.myapplication.DateUtils;
+import com.example.myapplication.R;
+import com.example.myapplication.activities.FindMyLocationActivity;
 import com.example.myapplication.models.Location;
 import com.example.myapplication.models.OrderRequest;
 import com.example.myapplication.models.RecycleBin;
@@ -27,9 +31,6 @@ import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Calendar;
 import java.util.TimeZone;

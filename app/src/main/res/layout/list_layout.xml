@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".RecyclerBinListActivity">
+    tools:context=".activities.RecyclerBinListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
