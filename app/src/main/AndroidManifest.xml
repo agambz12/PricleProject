@@ -40,12 +40,6 @@
             android:name=".activities.MapActivity"
             android:exported="false" />
         <activity
-            android:name=".LogInActivity"
-            android:exported="false" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.HomeScreenActivity"
             android:exported="false" />
         <activity

@@ -83,6 +83,15 @@
         android:id="@+id/login"
         android:textColor="@color/white"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/forget_password"
+        android:gravity="center"
+        android:textSize="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/forget_password"/>
+
     <Button
         android:layout_width="220dp"
         android:layout_height="wrap_content"

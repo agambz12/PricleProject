@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.example.myapplication.AlertDialogUtils;
 import com.example.myapplication.R;
+import com.example.myapplication.dialogfragments.ForgetPasswordDialog;
 import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth auth;
     TextInputEditText passwordET, emailET;
+
+    TextView forgetPasswordTV;
     ProgressDialog dialog;
     private User user;
 
@@ -33,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
 
         emailET = findViewById(R.id.email);
         passwordET = findViewById(R.id.password);
+        forgetPasswordTV = findViewById(R.id.forget_password);
 
 
         findViewById(R.id.login).setOnClickListener(view -> {
@@ -48,6 +53,12 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(guest);
         });
 
+        forgetPasswordTV.setOnClickListener(v -> forgetPassword());
+
+    }
+
+    private void forgetPassword() {
+        new ForgetPasswordDialog().show(getSupportFragmentManager(), "");
     }
 
     private void goToHomeScreen() {
