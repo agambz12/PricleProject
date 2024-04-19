@@ -5,43 +5,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     tools:context=".activities.ProfileActivity">
 
-
-    <TextView
-        android:id="@+id/name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
+        android:orientation="vertical">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/darkGrey"/>
+    </LinearLayout>
 
-    <ImageView
-        android:id="@+id/profile"
-        android:layout_gravity="center"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginBottom="32dp"/>
-
-
-    <com.example.myapplication.customviews.ProfileSection
-        android:id="@+id/edit_profile"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"/>
+        android:padding="16dp"
+        android:orientation="vertical">
 
-    <com.example.myapplication.customviews.ProfileSection
-        android:id="@+id/my_requests"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"/>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
 
-    <com.example.myapplication.customviews.ProfileSection
-        android:id="@+id/my_pick_ups"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"/>
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_gravity="center"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="32dp"/>
+
+
+        <com.example.myapplication.customviews.ProfileSection
+            android:id="@+id/edit_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+
+        <com.example.myapplication.customviews.ProfileSection
+            android:id="@+id/my_requests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+
+        <com.example.myapplication.customviews.ProfileSection
+            android:id="@+id/my_pick_ups"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+    </LinearLayout>
 
 
 

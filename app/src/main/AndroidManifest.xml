@@ -25,6 +25,7 @@
             android:exported="false" />
         <activity
             android:name=".activities.ProfileActivity"
+            android:theme="@style/AppNoAction"
             android:exported="false" />
         <activity
             android:name=".activities.RecyclerBinListActivity"
@@ -35,9 +36,6 @@
             android:exported="false" />
         <activity
             android:name=".activities.CreateOrUpdateProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.MapActivity"
             android:exported="false" />
         <activity
             android:name=".activities.HomeScreenActivity"

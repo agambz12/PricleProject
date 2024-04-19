@@ -1,16 +1,16 @@
 package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
-import com.example.myapplication.activities.CreateOrUpdateProfileActivity;
-import com.example.myapplication.activities.OrdersActivity;
 import com.example.myapplication.customviews.ProfileSection;
 import com.example.myapplication.models.User;
 
@@ -25,9 +25,18 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(R.string.find_your_recycle_bin);
+        toolbar.setNavigationIcon(R.drawable.back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         currentUser = (User) getIntent().getSerializableExtra("user");
-
         myRequestsPS = findViewById(R.id.my_requests);
         myRequestsPS.setTitle(getString(R.string.my_created_orders));
         pickUpsPS = findViewById(R.id.my_pick_ups);

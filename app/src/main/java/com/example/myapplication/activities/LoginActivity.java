@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.myapplication.AlertDialogUtils;
 import com.example.myapplication.R;
+import com.example.myapplication.SessionMode;
 import com.example.myapplication.dialogfragments.ForgetPasswordDialog;
 import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
         findViewById(R.id.logonGuest).setOnClickListener(view->{
             Intent guest= new Intent(LoginActivity.this, HomeScreenActivity.class);
+            SessionMode.setUserMode(UserMode.GUEST);
             startActivity(guest);
         });
 

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.SessionMode;
 import com.example.myapplication.dialogfragments.CreatePickupRequestDialog;
 import com.example.myapplication.dialogfragments.PickUpsRequestsDialog;
 import com.example.myapplication.R;
@@ -70,11 +71,18 @@ public class RecycleBinsAdapter extends RecyclerView.Adapter<RecycleBinsAdapter.
             }
         });
 
-        if (recycleBin.getPickUpRequests().size() > 0 && recycleBin.getPickUpRequests().stream().noneMatch(orderRequest -> orderRequest.getCreatedUserId().equals(user.getId()))) {
+        if (!SessionMode.isGuestMode() && recycleBin.getPickUpRequests().size() > 0 && recycleBin.getPickUpRequests().stream().noneMatch(orderRequest -> orderRequest.getCreatedUserId().equals(user.getId()))) {
             holder.showRequestsBT.setVisibility(View.VISIBLE);
         } else {
             holder.showRequestsBT.setVisibility(View.GONE);
         }
+
+        if (SessionMode.isGuestMode()) {
+            holder.requestBT.setVisibility(View.GONE);
+        } else {
+            holder.requestBT.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override

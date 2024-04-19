@@ -24,6 +24,7 @@ import android.widget.TimePicker;
 import com.example.myapplication.AlertDialogUtils;
 import com.example.myapplication.DataBaseManager;
 import com.example.myapplication.R;
+import com.example.myapplication.SessionMode;
 import com.example.myapplication.models.RecycleBinType;
 import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -71,7 +72,9 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS);
         setContentView(R.layout.activity_home_screen);
-        fetchUser();
+        if (SessionMode.getUserMode().equals(UserMode.REGULAR)) {
+            fetchUser();
+        }
         IMpaper = (ImageButton) findViewById(R.id.btpaper);
         IMpaper.setOnClickListener(this);
         IMpackaging = (ImageButton) findViewById(R.id.btpackaging);
@@ -212,6 +215,9 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_home, menu);
+        if (SessionMode.isGuestMode()) {
+            menu.removeItem(R.id.profile);
+        }
         return true;
     }
 
@@ -250,6 +256,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+        SessionMode.setUserMode(UserMode.REGULAR);
         finish();
     }
 
