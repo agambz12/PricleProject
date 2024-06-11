@@ -39,22 +39,24 @@ public class ProfileActivity extends AppCompatActivity {
         currentUser = (User) getIntent().getSerializableExtra("user");
         myRequestsPS = findViewById(R.id.my_requests);
         myRequestsPS.setTitle(getString(R.string.my_created_orders));
+        myRequestsPS.setIcon(R.drawable.baseline_send_24);
         pickUpsPS = findViewById(R.id.my_pick_ups);
         pickUpsPS.setTitle(getString(R.string.my_pick_up));
+        pickUpsPS.setIcon(R.drawable.pick_ups_checklist_24);
         editPS = findViewById(R.id.edit_profile);
         editPS.setTitle(getString(R.string.edit_profile));
-        editPS.setIcon(R.drawable.pen);
+        editPS.setIcon(R.drawable.baseline_edit_24);
 
         nameTV = findViewById(R.id.name);
-        nameTV.setText(currentUser.getFullName());
+        nameTV.setText(getString(R.string.hello_name, currentUser.getFullName()));
         profileIV = findViewById(R.id.profile);
 
         Glide.with(this).load(currentUser.getImage()).centerCrop()
                 //.placeholder(R.drawable.loading_spinner)
                 .into(profileIV);
 
-        myRequestsPS.setOnClickListener(v -> openOrdersScreen(true));
-        pickUpsPS.setOnClickListener(v -> openOrdersScreen(false));
+        myRequestsPS.setOnClickListener(v -> openOrdersScreen(true, myRequestsPS.getTitle()));
+        pickUpsPS.setOnClickListener(v -> openOrdersScreen(false,  pickUpsPS.getTitle()));
         editPS.setOnClickListener(v -> goToEditProfileScreen());
     }
 
@@ -64,10 +66,11 @@ public class ProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void openOrdersScreen(boolean showCreated) {
+    private void openOrdersScreen(boolean showCreated, String title) {
         Intent intent = new Intent(this, OrdersActivity.class);
         intent.putExtra("showCreated", showCreated);
         intent.putExtra("user", currentUser);
+        intent.putExtra("title", title);
         startActivity(intent);
     }
 }

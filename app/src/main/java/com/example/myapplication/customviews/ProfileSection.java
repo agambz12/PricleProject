@@ -49,4 +49,8 @@ public class ProfileSection extends LinearLayout {
     public void setIcon(int icon) {
         this.icon.setImageResource(icon);
     }
+
+    public String getTitle() {
+        return title.getText().toString();
+    }
 }

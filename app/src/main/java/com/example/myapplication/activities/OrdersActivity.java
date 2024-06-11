@@ -2,10 +2,12 @@ package com.example.myapplication.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.myapplication.DataBaseManager;
 import com.example.myapplication.R;
@@ -32,6 +34,16 @@ public class OrdersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_layout);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        String title = getIntent().getStringExtra("title");
+        toolbar.setTitle(title);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         showCreated = (Boolean) getIntent().getBooleanExtra("showCreated", true);
         currentUser = (User)getIntent().getSerializableExtra("user");
         RecyclerView recyclerView = findViewById(R.id.list);
@@ -57,7 +69,7 @@ public class OrdersActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            pickUpData.add(index, new PickUpData(request, task.getResult().toObject(User.class)));
+                            pickUpData.add(new PickUpData(request, task.getResult().toObject(User.class)));
                             if (index == currentUser.getMyOrdersPickUp().size() -1) {
                                 orderList();
                                 adapter.notifyDataSetChanged();

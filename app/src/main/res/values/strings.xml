@@ -58,4 +58,5 @@
     <string name="reset_success">Please check you inbox to complete reset process.</string>
     <string name="reset">Reset</string>
     <string name="please_enter_email">Please enter your email account</string>
+    <string name="hello_name">Hello, %1$s</string>
 </resources>
